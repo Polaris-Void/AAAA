@@ -1,0 +1,71 @@
+[package]
+name = "polaris-kit-pro"
+version = "3.1.1"
+edition = "2021"
+description = "Polaris-Kit-Pro — 12 Windows utilities in one native launcher (PRO edition, NATIVE-1080, v3.1)"
+default-run = "polaris-kit-pro"
+rust-version = "1.85"
+
+[lib]
+name = "polaris_kit_pro"
+path = "src/lib.rs"
+
+[[bin]]
+name = "polaris-kit-pro"
+path = "src/main.rs"
+
+[dependencies]
+egui = "0.36"
+eframe = { version = "0.36", default-features = false, features = ["default_fonts", "glow", "x11", "links"] }
+# native folder picker (the only OS dialog; everything else is in-app)
+rfd = { version = "0.17", default-features = false, features = ["xdg-portal", "wayland"] }
+# opens the default browser for https links
+open = "5"
+# local wall clock for the log timestamps
+time = { version = "0.3", features = ["local-offset", "formatting"] }
+# payload/staging integrity hashing (on-disk pins + boot audit)
+sha2 = "0.10"
+# decoding the brand mark into the window icon (same as the reference)
+image = { version = "0.25", default-features = false, features = ["png"] }
+
+[target.'cfg(windows)'.dependencies]
+winit = "0.30"
+
+[target.'cfg(windows)'.dependencies.windows]
+version = "0.61"
+features = [
+    "Win32_Foundation",
+    "Win32_Graphics_Dwm",
+    "Win32_Security",
+    "Win32_Storage_FileSystem",
+    "Win32_System_Threading",
+    "Win32_System_JobObjects",
+    "Win32_System_Pipes",
+    "Win32_System_IO",
+    "Win32_System_Console",
+    "Win32_System_Memory",
+    "Win32_System_SystemServices",
+    "Win32_System_LibraryLoader",
+    "Win32_UI_Shell",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_Globalization",
+]
+
+[build-dependencies]
+# exe icon + version resource; only active when targeting Windows.
+winresource = "0.1"
+
+[lints.rust]
+# Win32 FFI in src/run.rs is documented and allowed there; everywhere else
+# unsafe is a hard error.
+unsafe_code = "deny"
+
+[lints.clippy]
+dbg_macro = "warn"
+todo = "warn"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = "symbols"
+debug = false

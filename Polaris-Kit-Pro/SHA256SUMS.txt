@@ -1,0 +1,3 @@
+# Polaris-Kit-Pro v3.1.1 - release artifact hashes
+# Verify before running:  certutil -hashfile Polaris-Kit-Pro.exe SHA256
+7aa0abefddffafd199f3077babd41d64b15ef679b2a0b240e2ef5efaa16a53e7  Polaris-Kit-Pro.exe
